@@ -49,14 +49,14 @@ function SpeakerDemographics({first, last, bio, company, twitterHandle, favorite
 </div>);
 } 
 
-function Speaker({speaker}){
+function Speaker({speaker, showSessions}){
   return(
     <div className="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-sm-12 col-xs-12">
           <div className="card card-height p-4 mt-4">
             <SpeakerImage {...speaker}/>
             <SpeakerDemographics {...speaker} />
           </div>
-          <Sessions sessions={speaker.sessions}/>
+          {showSessions == true? <Sessions sessions={speaker.sessions}/>:null}
         </div>
   );
 }
