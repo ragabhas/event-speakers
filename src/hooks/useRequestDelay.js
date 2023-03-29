@@ -1,4 +1,3 @@
-import { data } from "../../SpeakerData";
 import { useState, useEffect } from "react";
 
 export const REQUEST_STATUS = {
@@ -7,9 +6,9 @@ export const REQUEST_STATUS = {
     FAILURE: "failure"
 };
 
-function useRequestSpeakers(delayTime = 1000) {
+function useRequestDelay(delayTime = 1000, initialData = []) {
 
-    const [speakersData, setSpeakersData] = useState([]);
+    const [data, setData] = useState(initialData);
     const [requestStatus, setRequestStatus] = useState(REQUEST_STATUS.LOADING);
     const [error, setError] = useState("");
 
@@ -19,7 +18,7 @@ function useRequestSpeakers(delayTime = 1000) {
         async function delayFunc() {
             try {
                 await delay(delayTime);
-                setSpeakersData(data);
+                setData(data);
                 setRequestStatus(REQUEST_STATUS.SUCCESS);
             } catch (e) {
                 setRequestStatus(REQUEST_STATUS.FAILURE);
@@ -29,23 +28,26 @@ function useRequestSpeakers(delayTime = 1000) {
 
         delayFunc();
     }, []);
-    function onFavoriteToggle(id) {
-        const speakerPrev = speakersData.find(function (rec) {
-            return rec.id === id;
+    
+    function updateRecord(recordUpdated) {
+        const newRecords = data.map(function (record) {
+            return record.id == recordUpdated.id ? recordUpdated : record;
         });
 
-        const speakerUpdated = { ...speakerPrev, favorite: !speakerPrev.favorite };
-        const speakersUpdated = speakersData.map(function (rec) {
-            return rec.id === id ? speakerUpdated : rec;
-        });
+        async function delayFunction() {
+            try {
+                await delay(delayTime);
+                setData(newRecords);
+            } catch (e) {
+            }
+        }
 
-        setSpeakersData(speakersUpdated);
+        delayFunction();
     }
-
     return {
-        speakersData, requestStatus,
-        error, onFavoriteToggle
+        data, requestStatus,
+        error, updateRecord
     };
 }
 
-export default useRequestSpeakers;
+export default useRequestDelay;
