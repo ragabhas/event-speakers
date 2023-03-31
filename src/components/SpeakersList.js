@@ -2,8 +2,6 @@ import Speaker from "./Speaker";
 import ReactPlaceHolder from "react-placeholder";
 import useRequestDelay, { REQUEST_STATUS } from "../hooks/useRequestDelay";
 import { data } from "../../SpeakerData";
-import { useContext } from "react";
-import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
 
 function SpeakersList() {
   const {
@@ -13,7 +11,6 @@ function SpeakersList() {
     updateRecord,
   } = useRequestDelay(2000, data);
 
-  const { showSessions } = useContext(SpeakerFilterContext);
   if (requestStatus === REQUEST_STATUS.FAILURE)
     return (
       <div className="text-danger">
@@ -35,7 +32,6 @@ function SpeakersList() {
               <Speaker
                 key={speaker.id}
                 speaker={speaker}
-                showSessions={showSessions}
                 onFavoriteToggle={(doneCallback) => {
                   updateRecord(
                     { ...speaker, favorite: !speaker.favorite },
