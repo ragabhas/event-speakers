@@ -2,8 +2,10 @@ import Speaker from "./Speaker";
 import ReactPlaceHolder from "react-placeholder";
 import useRequestDelay, { REQUEST_STATUS } from "../hooks/useRequestDelay";
 import { data } from "../../SpeakerData";
+import { useContext } from "react";
+import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
 
-function SpeakersList({ showSessions }) {
+function SpeakersList() {
   const {
     data: speakersData,
     requestStatus,
@@ -11,6 +13,7 @@ function SpeakersList({ showSessions }) {
     updateRecord,
   } = useRequestDelay(2000, data);
 
+  const { showSessions } = useContext(SpeakerFilterContext);
   if (requestStatus === REQUEST_STATUS.FAILURE)
     return (
       <div className="text-danger">
