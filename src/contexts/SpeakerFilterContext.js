@@ -5,7 +5,7 @@ const SpeakerFilterContext = createContext();
 
 function SpeakerFilterProvider({
   startingShowSessions = false,
-  startingEventYear = "2018",
+  startingEventYear = "2008",
   children,
 }) {
   const {

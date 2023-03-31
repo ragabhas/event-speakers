@@ -1,19 +1,29 @@
-import React, { useState } from "react";
-import { useContext } from "react";
+import React, { useState, useContext } from "react";
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
 
 function Session({ title, room }) {
   return (
     <span className="session w-100">
-      {title} <strong>Room: {room}</strong>
+      {title} <strong>Room: {room.name}</strong>
     </span>
   );
 }
 
 function Sessions({ sessions }) {
+  const { eventYear } = useContext(SpeakerFilterContext);
   return (
     <div className="sessionBox card h-250">
-      <Session title={sessions[0].title} room={sessions[0].room.name} />
+      {sessions
+        .filter((session) => {
+          return session.eventYear === eventYear;
+        })
+        .map((session) => {
+          return (
+            <div className="session w-100" key={session.id}>
+              <Session {...session} />
+            </div>
+          );
+        })}
     </div>
   );
 }
