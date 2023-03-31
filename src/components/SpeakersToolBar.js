@@ -4,7 +4,15 @@ import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
 
 function SpeakersToolBar() {
   const { theme, setTheme } = useContext(ThemeContext);
-  const { showSessions, setShowSessions } = useContext(SpeakerFilterContext);
+  const {
+    showSessions,
+    setShowSessions,
+    eventYear,
+    setEventYear,
+    searchQuery,
+    setSearchQuery,
+    EVENT_YEARS,
+  } = useContext(SpeakerFilterContext);
 
   return (
     <section className="toolbar dark-theme-header">
