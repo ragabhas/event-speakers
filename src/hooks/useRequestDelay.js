@@ -31,10 +31,10 @@ function useRequestDelay(delayTime = 1000, initialData = []) {
     delayFunc();
   }, []);
 
-  function updateRecord(recordUpdated, doneCallback) {
+  function updateRecord(record, doneCallback) {
     const originalData = [...data];
-    const newRecords = data.map(function (record) {
-      return record.id == recordUpdated.id ? recordUpdated : record;
+    const newRecords = data.map(function (rec) {
+      return rec.id == record.id ? record : rec;
     });
 
     async function delayFunction() {
@@ -55,11 +55,62 @@ function useRequestDelay(delayTime = 1000, initialData = []) {
 
     delayFunction();
   }
+
+  function insertRecord(record, doneCallback) {
+    const originalData = [...data];
+    const newRecords = [record, ...data];
+
+    async function delayFunction() {
+      try {
+        setData(newRecords);
+        await delay(delayTime);
+        if (doneCallback) {
+          doneCallback();
+        }
+      } catch (e) {
+        console.log(e);
+        if (doneCallback) {
+          doneCallback();
+        }
+        setData(originalData);
+      }
+    }
+
+    delayFunction();
+  }
+
+  function deleteRecord(record, doneCallback) {
+    const originalData = [...data];
+    const newRecords = data.filter(function (rec) {
+      return rec.id != record.id;
+    });
+
+    async function delayFunction() {
+      try {
+        setData(newRecords);
+        await delay(delayTime);
+        if (doneCallback) {
+          doneCallback();
+        }
+      } catch (e) {
+        console.log(e);
+        if (doneCallback) {
+          doneCallback();
+        }
+        setData(originalData);
+      }
+    }
+
+    delayFunction();
+  }
+
   return {
     data,
     requestStatus,
     error,
     updateRecord,
+    insertRecord,
+    deleteRecord,
   };
 }
 
